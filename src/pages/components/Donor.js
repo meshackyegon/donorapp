@@ -1,5 +1,5 @@
 import React from 'react';
-import { donate } from '../../services/api/donor';
+import { donate } from '../../services/api/donor.php';
 
 function Donor() {
   const handleDonation = async (amount) => {

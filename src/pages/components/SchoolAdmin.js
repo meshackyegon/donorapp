@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getStudentList, addStudent, deleteStudent } from '../../services/api/schoolAdmin';
+import { getStudentList, addStudent, deleteStudent } from '../../services/api/schoolAdmin.php';
 
 function SchoolAdmin() {
   const [students, setStudents] = useState([]);

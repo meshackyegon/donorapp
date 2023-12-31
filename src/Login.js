@@ -1,9 +1,10 @@
-// Login.js
-
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom'; // Import useHistory hook
 import App from './App';
 
 const Login = () => {
+  const history = useHistory(); // Initialize useHistory
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -16,51 +17,39 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add logic to handle login here (e.g., API call to authenticate user)
-  
 
-    console.log(formData);
-    const API_BASE_URL = 'http://localhost/php/login';
-    const login = async (username, password) => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username, password }),
+    try {
+      const API_BASE_URL='http://localhost/php'
+      const response = await fetch(`${API_BASE_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: formData.username, password: formData.password }),
+      });
 
-          //redirect to app:
-          
-
-        });
-    
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-    
-        const responseData = await response.json();
-        console.log(responseData);
-    
-        return responseData; 
-      } catch (error) {
-        console.error('Error during login:', error);
-        throw error; 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
 
-    //send the form data to the backend to authenticate the user in services/api/login.js
-    //call the api for login
-    //if successful, store the token in local storage
-    //redirect to the donor page
-    //if unsuccessful, display an error message
+      const responseData = await response.json();
+      console.log(responseData);
 
-
+      // Check if login was successful (modify this based on your API response)
+      if (responseData.success) {
+        // Redirect to App.js on successful login
+        history.push('/app'); // Update the path as needed
+      } else {
+        // Handle unsuccessful login (show error message, etc.)
+        console.error('Login failed:', responseData.message);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
-
-  return (
+return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Login</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
